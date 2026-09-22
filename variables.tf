@@ -1,0 +1,23 @@
+variable "aws_region" {
+  description = "The AWS region where resources will be deployed"
+  type        = string
+  default     = "ap-south-1"
+}
+
+variable "cluster_name" {
+  description = "The name of the EKS cluster"
+  type        = string
+  default     = "dev-eks-cluster"
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block for the VPC"
+  type        = string
+  default     = "10.0.0.0/16"
+}
+
+variable "environment" {
+  description = "Deployment environment name tag"
+  type        = string
+  default     = "development"
+}

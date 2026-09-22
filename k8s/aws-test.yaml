@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-test
+spec:
+  serviceAccountName: devops-demo-api
+  restartPolicy: Never
+
+  containers:
+    - name: aws-cli
+      image: amazon/aws-cli
+
+      command:
+        - aws
+        - secretsmanager
+        - get-secret-value
+        - --region
+        - ap-south-1
+        - --secret-id
+        - "arn:aws:secretsmanager:ap-south-1:891568748363:secret:rds!db-25022de0-f53d-4f1e-a1ff-1c6cd051adc4-CW2lQn"
+        - --query
+        - "ARN"
+        - --output
+        - text
+        

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devops-demo-api
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: devops-demo-api
+
+  template:
+    metadata:
+      labels:
+        app: devops-demo-api
+
+    spec:
+      serviceAccountName: devops-demo-api
+      containers:
+        - name: devops-demo-api
+          image: 891568748363.dkr.ecr.ap-south-1.amazonaws.com/devops-demo-api:1.1
+
+          ports:
+            - containerPort: 8000
+          env:
+          - name: AWS_REGION
+            value: "ap-south-1"
+
+          - name: DB_SECRET_ARN
+            value: "arn:aws:secretsmanager:ap-south-1:891568748363:secret:rds!db-25022de0-f53d-4f1e-a1ff-1c6cd051adc4-CW2lQn"
+
+          - name: DB_HOST
+            value: "dev-eks-cluster-postgres.cfiyi2myq2vi.ap-south-1.rds.amazonaws.com"
+
+          - name: DB_PORT
+            value: "5432"
+
+          - name: DB_NAME
+            value: "appdb"
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
