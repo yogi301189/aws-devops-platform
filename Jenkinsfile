@@ -13,6 +13,11 @@ pipeline {
                 bat 'terraform fmt -check -recursive'
             }
         }
+        stage('Terraform Init') {
+            steps {
+                bat 'terraform init -input=false'
+            }
+        }
 
         stage('Terraform Validate') {
             steps {
